@@ -6,6 +6,6 @@ RUN mkdir /bot
 
 RUN git clone https://github.com/organization-x/discord-js-thread-cleanup /bot
 
-RUN cd /bot && ls -lah && npm i
+RUN cd /bot && npm i
 
 ENTRYPOINT [ "node", "/bot/index.js" ]
