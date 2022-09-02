@@ -36,7 +36,10 @@ client.on('interactionCreate', async (interaction) => {
 
     const num_messages = interaction.options.getInteger('amount', true);
     const thread_name = interaction.options.getString('thread') || interaction.user.username + "'s thread";
+    
     const channel = interaction.channel;
+    if (channel.isThread()) return;
+
     const messages = await channel.messages.fetch({ limit: num_messages, before: interaction.id });
     const thread = await channel.threads.create({
         name: thread_name,
