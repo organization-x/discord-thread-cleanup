@@ -36,9 +36,11 @@ client.on('interactionCreate', async (interaction) => {
 
     const num_messages = interaction.options.getInteger('amount', true);
     const thread_name = interaction.options.getString('thread') || interaction.user.username + "'s thread";
-    
+
     const channel = interaction.channel;
-    if (channel.isThread()) return;
+    if (channel.isThread()) await interaction.followUp({
+        content: `Cannot create a thread in a thread.`,
+    });;
 
     const messages = await channel.messages.fetch({ limit: num_messages, before: interaction.id });
     const thread = await channel.threads.create({
@@ -46,7 +48,7 @@ client.on('interactionCreate', async (interaction) => {
         autoArchiveDuration: 60,
         reason: "Thread created by thread creator bot",
     });
-    
+
     await thread.join();
 
     const mappedIds = new Collection();
@@ -64,7 +66,7 @@ client.on('interactionCreate', async (interaction) => {
             .setFooter({
                 text: `Sent at ${message.createdAt.toLocaleString()}`,
             });
-        
+
         if (message.reference) {
             const ref = { ...message.reference };
 
@@ -89,7 +91,7 @@ client.on('interactionCreate', async (interaction) => {
     }
 
     await channel.bulkDelete(messages);
-    
+
     await interaction.followUp({
         content: `Moved ${num_messages} messages to thread ${thread_name}`
     });
