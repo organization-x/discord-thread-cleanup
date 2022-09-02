@@ -40,6 +40,7 @@ client.on('interactionCreate', async (interaction) => {
     const channel = interaction.channel;
     if (channel.isThread()) await interaction.followUp({
         content: `Cannot create a thread in a thread.`,
+        ephemeral: true
     });;
 
     const messages = await channel.messages.fetch({ limit: num_messages, before: interaction.id });
