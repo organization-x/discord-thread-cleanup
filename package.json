@@ -1,0 +1,13 @@
+{
+  "name": "threadcleaner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/organization-x/discord-js-thread-cleanup.git",
+  "author": "Jackson Choyce <jacksonchoyce@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.0.3",
+    "ascii-table": "^0.0.9",
+    "fs": "0.0.1-security"
+  }
+}
