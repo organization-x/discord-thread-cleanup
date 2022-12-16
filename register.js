@@ -10,6 +10,6 @@ const commandData = new SlashCommandBuilder()
 const rest = new REST({ version: '10' }).setToken(process.env.THREAD_CREATOR_BOT_TOKEN);
 
 rest.put(
-	Routes.applicationCommands('1015347991504224257'),
+	Routes.applicationCommands('981255217351905370'),
 	{ body: [commandData.toJSON()] },
 ).then(() => console.log('Successfully registered application commands.')).catch(console.error);

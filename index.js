@@ -56,6 +56,22 @@ client.on('interactionCreate', async (interaction) => {
 
     for (const message of messages.reverse().values()) {
         if (!message.author || message.author.bot) continue;
+        if (message.attachments && message.attachments.size > 0) {
+            for (const attachment of message.attachments.values()) {
+                if (attachment.size > 8388608) {
+                    const newMessage = await thread.send({
+                        content: `<@${message.member.id}> sent: ${message.content}`,
+                    });
+                    mappedIds.set(message.id, newMessage.id);
+                }
+                const newMessage = await thread.send({
+                    content: `<@${message.member.id}> sent: ${message.content}`,
+                    files: [attachment.url]
+                });
+                mappedIds.set(message.id, newMessage.id);
+            }
+            continue;
+        }
 
         const embed = new EmbedBuilder()
             .setAuthor({
