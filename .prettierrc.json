@@ -1,0 +1,7 @@
+{
+	"arrowParens": "avoid",
+	"endOfLine": "lf",
+	"tabWidth": 2,
+	"trailingComma": "none",
+	"useTabs": true
+}
