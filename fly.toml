@@ -13,7 +13,6 @@ kill_timeout = "5s"
 
 [env]
   PRIMARY_REGION = "lax"
-  THREAD_CREATOR_BOT_TOKEN = "MTAxNTM0Nzk5MTUwNDIyNDI1Nw.G2lUq0.yYjoaAKZK_aWzgPVUeLSrkhXVkS0hS528n0xqg"
 
 [[services]]
   protocol = "tcp"
