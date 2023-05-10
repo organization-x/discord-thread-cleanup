@@ -1,11 +1,44 @@
-FROM node:18-alpine
+# syntax = docker/dockerfile:1
 
-RUN apk add --no-cache git
+# Adjust NODE_VERSION as desired
+ARG NODE_VERSION=18.16.0
+FROM node:${NODE_VERSION}-slim as base
 
-RUN mkdir /bot
+LABEL fly_launch_runtime="NodeJS"
 
-RUN git clone https://github.com/organization-x/discord-js-thread-cleanup /bot
+# NodeJS app lives here
+WORKDIR /app
 
-RUN cd /bot && npm i
+# Set production environment
+ENV NODE_ENV=production
 
-ENTRYPOINT [ "node", "/bot/index.js" ]
+
+# Throw-away build stage to reduce size of final image
+FROM base as build
+
+# Install packages needed to build node modules
+RUN apt-get update -qq && \
+    apt-get install -y python-is-python3 pkg-config build-essential 
+
+# Install node modules
+COPY --link package.json .
+RUN npm install --production=false
+
+# Copy application code
+COPY --link . .
+
+# Build application
+RUN npm run build
+
+# Remove development dependencies
+RUN npm prune --production
+
+
+# Final stage for app image
+FROM base
+
+# Copy built application
+COPY --from=build /app /app
+
+# Start the server by default, this can be overwritten at runtime
+CMD [ "npm", "run", "start" ]
