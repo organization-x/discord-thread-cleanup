@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for thread-cleanup on 2023-05-10T15:52:56-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "thread-cleanup"
+primary_region = "lax"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[experimental]
+  auto_rollback = true
+
+[env]
+  PRIMARY_REGION = "lax"
+  THREAD_CREATOR_BOT_TOKEN = "MTAxNTM0Nzk5MTUwNDIyNDI1Nw.G2lUq0.yYjoaAKZK_aWzgPVUeLSrkhXVkS0hS528n0xqg"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 8080
+  ports = []
+  processes = ["app"]
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20

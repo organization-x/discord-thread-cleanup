@@ -7,6 +7,7 @@
 	"main": "build/main.js",
 	"scripts": {
 		"build": "tsc && copyfiles -u 1 \"./src/common/resources/**/*\" build",
+		"start": "node build/main.js",
 		"dev": "tsc-watch --onSuccess \"node build/main.js\" --noClear",
 		"lint": "eslint . --ext .ts"
 	},
