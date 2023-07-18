@@ -58,7 +58,7 @@ export class MoveAmount {
 			return;
 		}
 
-		const message = await channel.messages.fetch(messageId);
+		const message = await channel.messages.fetch(messageId).catch(() => null);
 
 		if (!message) {
 			await interaction.followUp({
