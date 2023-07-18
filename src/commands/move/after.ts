@@ -11,18 +11,18 @@ import { Discord, Slash, SlashGroup, SlashOption } from "discordx";
 @SlashGroup("move")
 export class MoveAmount {
 	@Slash({
-		name: "amount",
+		name: "after",
 		description:
-			"Move last x messages to a thread the delete the original ones."
+			"Move messages after a certain message to a thread the delete the original ones. (max 100)"
 	})
 	async moveAmount(
 		@SlashOption({
-			name: "amount",
-			description: "Last x messages to move.",
-			type: ApplicationCommandOptionType.Integer,
+			name: "message",
+			description: "Message ID or link to move messages after",
+			type: ApplicationCommandOptionType.String,
 			required: true
 		})
-		numMessages: string,
+		messageId: string,
 		@SlashOption({
 			name: "thread-name",
 			description: "Name of the thread",
@@ -38,6 +38,12 @@ export class MoveAmount {
 
 		const channel = interaction.channel;
 
+		try {
+			BigInt(messageId);
+		} catch {
+			messageId = messageId.split("/").pop() || "";
+		}
+
 		if (
 			!channel ||
 			!channel.isTextBased() ||
@@ -52,9 +58,19 @@ export class MoveAmount {
 			return;
 		}
 
+		const message = await channel.messages.fetch(messageId);
+
+		if (!message) {
+			await interaction.followUp({
+				content: `Message not found.`,
+				ephemeral: true
+			});
+			return;
+		}
+
 		const messages = await channel.messages.fetch({
-			limit: Number(numMessages),
-			before: interaction.id
+			limit: 100,
+			after: messageId
 		});
 
 		const thread = await channel.threads.create({
